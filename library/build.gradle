@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 27
@@ -31,4 +32,14 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
+
+publish {
+    repoName = 'BaseAdapter'//这个名称对应在bintray中建的仓库,一定要写
+    userOrg = 'neuzzx'
+    groupId = 'com.zzx'
+    artifactId = 'BaseAdapter'
+    publishVersion = '1.0.0'
+    desc = 'support multi-type item, header view, rooter view'
+    website = 'https://github.com/imurluck/BaseAdapter'
 }

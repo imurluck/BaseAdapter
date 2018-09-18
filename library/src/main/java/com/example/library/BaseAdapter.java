@@ -1,83 +1,45 @@
 package com.example.library;
 
 
-import android.preference.PreferenceActivity;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class BaseAdapter extends RecyclerView.Adapter<BaseViewHolder>{
+public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
 
     private List<Object> mDataList;
 
-    private List<HeaderViewHolder.HeaderEntity> mHeaderList;
+    private List<HeaderEntity> mHeaderList;
 
-    private List<RooterViewHolder.RooterEntity> mRooterList;
+    private List<RooterEntity> mRooterList;
 
-    private ItemTypePool mItemTypePool;
-
-    private View mTempView;
 
     private BaseAdapter() {
         mDataList = new ArrayList<>(0);
-        mItemTypePool = new ItemTypePool();
         mHeaderList = new ArrayList<>(0);
         mRooterList = new ArrayList<>(0);
     }
 
     @NonNull
     @Override
-    public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Class holderClazz = mItemTypePool.get(mDataList.get(viewType).getClass());
-        if (holderClazz == null) {
-            throw new BaseAdapterException(BaseAdapterException.VIEW_HOLDER_NOT_REGISTER);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Object entity = mDataList.get(viewType);
+        if (!(entity instanceof IEntity)) {
+            throw new BaseAdapterException(BaseAdapterException.ENTITY_TYPE_ERROR);
         }
-        if (mDataList.get(viewType) instanceof HeaderViewHolder.HeaderEntity) {
-            return new HeaderViewHolder(((HeaderViewHolder.HeaderEntity) mDataList.get(viewType)).headerView);
-        }
-        if (mDataList.get(viewType) instanceof RooterViewHolder.RooterEntity) {
-            return new RooterViewHolder(((RooterViewHolder.RooterEntity) mDataList.get(viewType)).rooterView);
-        }
-        BaseViewHolder holder = null;
-        try {
-            Constructor constructor = holderClazz.getConstructor(View.class);
-            if (mTempView == null) {
-                mTempView = new TextView(parent.getContext());
-            }
-            holder = (BaseViewHolder) constructor.newInstance(mTempView);
-            holder.rootView = holder.getLayoutView(LayoutInflater.from(parent.getContext()));
-            Field itemView = holderClazz.getField("itemView");
-            if (!itemView.isAccessible()) {
-                itemView.setAccessible(true);
-            }
-            itemView.set(holder, holder.rootView);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-        return holder;
+
+        View view = ((IEntity) entity).getLayoutView(LayoutInflater.from(parent.getContext()));
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
-        holder.bind(mDataList.get(position));
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        IEntity entity = (IEntity) mDataList.get(position);
+        entity.bindView(holder.rootView, entity);
     }
 
     @Override
@@ -122,6 +84,16 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         return mDataList.size();
     }
 
+    class ViewHolder extends RecyclerView.ViewHolder {
+
+        View rootView;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            this.rootView = itemView;
+        }
+    }
+
     public static class Builder {
 
         private BaseAdapter mAdapter;
@@ -130,20 +102,6 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             mAdapter = new BaseAdapter();
         }
 
-        public Builder register(Class<?> entityClazz, Class<? extends BaseViewHolder> holderClazz) {
-            mAdapter.mItemTypePool.put(entityClazz, holderClazz);
-            return this;
-        }
-
-        public Builder register(List<Class<?>> entityList, List<Class<? extends BaseViewHolder>> holderList) {
-            if (entityList.size() != holderList.size()) {
-                throw new BaseAdapterException(BaseAdapterException.ENTITY_HOLDER_LIST_NOT_MAP);
-            }
-            for (int i = 0; i < entityList.size(); i++) {
-                mAdapter.mItemTypePool.put(entityList.get(i), holderList.get(i));
-            }
-            return this;
-        }
 
         public Builder setDataList(List<Object> dataList) {
             mAdapter.mDataList.addAll(mAdapter.mHeaderList.size(), dataList);
@@ -151,33 +109,29 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         }
 
         public Builder addHeader(View headerView) {
-            register(HeaderViewHolder.HeaderEntity.class, HeaderViewHolder.class);
-            mAdapter.mHeaderList.add(0, new HeaderViewHolder.HeaderEntity(headerView));
-            mAdapter.mDataList.add(0, new HeaderViewHolder.HeaderEntity(headerView));
+            mAdapter.mHeaderList.add(0, new HeaderEntity(headerView));
+            mAdapter.mDataList.add(0, new HeaderEntity(headerView));
             return this;
         }
 
         public Builder addHeader(List<View> headerList) {
-            register(HeaderViewHolder.HeaderEntity.class, HeaderViewHolder.class);
             for (int i = headerList.size() - 1; i >= 0; i--) {
-                mAdapter.mHeaderList.add(0, new HeaderViewHolder.HeaderEntity(headerList.get(i)));
-                mAdapter.mDataList.add(0, new HeaderViewHolder.HeaderEntity(headerList.get(i)));
+                mAdapter.mHeaderList.add(0, new HeaderEntity(headerList.get(i)));
+                mAdapter.mDataList.add(0, new HeaderEntity(headerList.get(i)));
             }
             return this;
         }
 
         public Builder addRooter(View view) {
-            register(RooterViewHolder.RooterEntity.class, RooterViewHolder.class);
-            mAdapter.mRooterList.add(new RooterViewHolder.RooterEntity(view));
-            mAdapter.mDataList.add(new RooterViewHolder.RooterEntity(view));
+            mAdapter.mRooterList.add(new RooterEntity(view));
+            mAdapter.mDataList.add(new RooterEntity(view));
             return this;
         }
 
         public Builder addRooter(List<View> rooterList) {
-            register(RooterViewHolder.RooterEntity.class, RooterViewHolder.class);
             for (int i = rooterList.size() - 1; i >= 0; i--) {
-                mAdapter.mRooterList.add(new RooterViewHolder.RooterEntity(rooterList.get(i)));
-                mAdapter.mDataList.add(new RooterViewHolder.RooterEntity(rooterList.get(i)));
+                mAdapter.mRooterList.add(new RooterEntity(rooterList.get(i)));
+                mAdapter.mDataList.add(new RooterEntity(rooterList.get(i)));
             }
             return this;
         }

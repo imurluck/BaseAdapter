@@ -1,6 +1,5 @@
 package com.example.zzx.baseadapter;
 
-import android.media.tv.TvView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -61,22 +60,25 @@ public class MainActivity extends AppCompatActivity {
         mRecycler = findViewById(R.id.recycler);
         mRecycler.setLayoutManager(new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false));
+        Log.e(TAG, "setupRecyclerView: " + System.currentTimeMillis());
         mAdapter = new BaseAdapter.Builder()
-                .register(BtnEntity.class, BtnViewHolder.class)
-                .register(TvEntity.class, TvViewHolder.class)
-                .register(ImgEntity.class, ImgViewHolder.class)
                 .setDataList(mDataList)
                 .addHeader(headerBtn)
                 .addRooter(rooterBtn)
                 .build();
-        Log.e(TAG, "setupRecyclerView: " + System.currentTimeMillis());
         mRecycler.setAdapter(mAdapter);
         mRecycler.post(new Runnable() {
             @Override
             public void run() {
                 Log.e(TAG, "run: " + System.currentTimeMillis());
                 //mRecycler.setAdapter(new SingleTypeAdapter(mSingleDataList));
-                Log.e(TAG, "run: " + System.currentTimeMillis());
+                mRecycler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.e(TAG, "run: " + System.currentTimeMillis());
+
+                    }
+                });
             }
         });
     }

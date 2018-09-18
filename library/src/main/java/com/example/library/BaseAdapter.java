@@ -85,6 +85,37 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         return position;
     }
 
+    public void add(Object entity) {
+        mDataList.add(mDataList.size() - mRooterList.size());
+    }
+
+    public void add(List<Object> entityList) {
+        mDataList.addAll(mDataList.size() - mRooterList.size(), entityList);
+    }
+
+    public void remove(int index) {
+        if (index < mHeaderList.size() || index >= mDataList.size() - mRooterList.size()) {
+            throw new BaseAdapterException(BaseAdapterException.INDEX_OUT_OF_RANGE);
+        }
+        mDataList.remove(index);
+    }
+
+    public void update(int index, Object entity) {
+        if (index < mHeaderList.size() || index >= mDataList.size() - mRooterList.size()) {
+            throw new BaseAdapterException(BaseAdapterException.INDEX_OUT_OF_RANGE);
+        }
+        mDataList.remove(index);
+        mDataList.add(index, entity);
+        this.notifyItemChanged(index);
+    }
+
+    public void replace(List<Object> entityList) {
+        mDataList.clear();
+        mDataList.addAll(mHeaderList);
+        mDataList.addAll(entityList);
+        mDataList.addAll(mRooterList);
+        this.notifyDataSetChanged();
+    }
 
     @Override
     public int getItemCount() {

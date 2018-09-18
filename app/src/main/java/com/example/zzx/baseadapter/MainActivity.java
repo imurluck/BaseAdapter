@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new BaseAdapter.Builder()
                 .register(BtnEntity.class, BtnViewHolder.class)
                 .register(TvEntity.class, TvViewHolder.class)
+                .register(ImgEntity.class, ImgViewHolder.class)
                 .setDataList(mDataList)
                 .addHeader(headerBtn)
                 .addRooter(rooterBtn)
@@ -84,11 +85,13 @@ public class MainActivity extends AppCompatActivity {
         if (mDataList == null) {
             mDataList = new ArrayList<>();
         }
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 30; i++) {
             if (i % 3 == 0) {
                 mDataList.add(new BtnEntity("button " + i));
-            } else {
+            } else if (i % 5 == 0) {
                 mDataList.add(new TvEntity("text view " + i));
+            } else {
+                mDataList.add(new ImgEntity());
             }
         }
     }

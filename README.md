@@ -6,7 +6,7 @@
 
 <figure class="half">
 
-<img src="./screenshots/header.png" width="30%" height="40%" />                                                             <img src="./screenshots/header.png" width="30%" height="40%" /> </figure>
+<img src="./screenshots/header.png" width="30%" height="40%" />                                                             <img src="./screenshots/rooter.png" width="30%" height="40%" /> </figure>
 
 ### 依赖
 
@@ -74,4 +74,4 @@ implementation 'com.zzx:BaseAdapter:2.0.0'
 
   ### 协议
 
-   [](http://www.apache.org/licenses/LICENSE-2.0)
+  <a href="http://www.apache.org/licenses/LICENSE-2.0">APACHE LICENSE-2.0</a> 

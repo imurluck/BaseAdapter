@@ -2,6 +2,11 @@
 
 多类型item的RecyclerView Adapter,支持添加头部和尾部View等功能
 
+### 宗旨
+
+- 我做最少的事让你施展更大的拳脚
+- 只涉及Adapter,滑动冲突等让你自己解决
+
 ### 效果图
 
 <figure class="half">

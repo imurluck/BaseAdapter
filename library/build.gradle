@@ -23,10 +23,14 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support:appcompat-v7:27.1.1'
     testImplementation 'junit:junit:4.12'
@@ -39,7 +43,10 @@ publish {
     userOrg = 'neuzzx'
     groupId = 'com.zzx'
     artifactId = 'BaseAdapter'
-    publishVersion = '2.0.0'
-    desc = 'support multi-type item, header view, rooter view'
+    publishVersion = '2.0.1'
+    desc = 'update:' +
+            '- getItemViewType changed the way to get Layout ID' +
+            '- IEntity interface changed the method' +
+            '- fix some bug(like remove, add method)'
     website = 'https://github.com/imurluck/BaseAdapter'
 }

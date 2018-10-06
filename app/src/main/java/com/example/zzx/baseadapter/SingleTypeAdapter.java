@@ -7,7 +7,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import java.util.List;
-
+/**
+ * 普通官方版的写法，用于对比BaseAdapter的生成速度
+ * create by zzx
+ * create at 18-10-6
+ */
 public class SingleTypeAdapter extends RecyclerView.Adapter<SingleTypeAdapter.ViewHolder> {
 
     private List<String> mDataList;
@@ -23,8 +27,15 @@ public class SingleTypeAdapter extends RecyclerView.Adapter<SingleTypeAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         holder.btn.setText(mDataList.get(position));
+        holder.btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDataList.remove(position);
+                notifyItemRemoved(holder.getAdapterPosition());
+            }
+        });
     }
 
     @Override

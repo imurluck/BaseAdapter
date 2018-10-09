@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.library.BaseAdapter;
+import com.example.library.IEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mRecycler;
 
-    private List<Object> mDataList;
+    private List<IEntity> mDataList;
 
     private List<String> mSingleDataList;
 

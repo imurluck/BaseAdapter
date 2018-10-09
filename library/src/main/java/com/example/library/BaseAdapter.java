@@ -27,7 +27,7 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
     /**
      * 数据集合，包含数据实体集，头部尾部实体集，(头部和尾部可以看做多类型中的一种,因此合并)
      */
-    private List<Object> mDataList;
+    private List<IEntity> mDataList;
 
     /**
      * 单独保存头部实体集引用序列
@@ -126,7 +126,7 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
      * 在末尾添加一个新的实体
      * @param entity
      */
-    public <D extends IEntity> void add(D entity) {
+    public void add(IEntity entity) {
         mDataList.add(mDataList.size() - mRooterList.size(), entity);
         this.notifyItemInserted(mDataList.size() - mRooterList.size() - 1);
     }
@@ -136,7 +136,7 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
      * @param index
      * @param entity
      */
-    public <D extends IEntity> void add(int index, D entity) {
+    public void add(int index, IEntity entity) {
         checkIndex(index);
         mDataList.add(index, entity);
         this.notifyItemInserted(index);
@@ -156,7 +156,7 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
      * 在末尾处添加实体集
      * @param entityList
      */
-    public void add(List<Object> entityList) {
+    public void add(List<IEntity> entityList) {
         mDataList.addAll(mDataList.size() - mRooterList.size(), entityList);
         this.notifyItemRangeInserted(mDataList.size() - mRooterList.size() - entityList.size(),
                 entityList.size());
@@ -194,7 +194,7 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
      * 替换所有实体
      * @param entityList
      */
-    public void replace(List<Object> entityList) {
+    public void replace(List<IEntity> entityList) {
         mDataList.clear();
         mDataList.addAll(mHeaderList);
         mDataList.addAll(entityList);
@@ -242,7 +242,7 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
          * @param dataList
          * @return
          */
-        public Builder setDataList(List<Object> dataList) {
+        public Builder setDataList(List<IEntity> dataList) {
             mAdapter.mDataList.addAll(mAdapter.mHeaderList.size(), dataList);
             return this;
         }

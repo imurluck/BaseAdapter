@@ -126,7 +126,7 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
      * 在末尾添加一个新的实体
      * @param entity
      */
-    public void add(Object entity) {
+    public <D extends IEntity> void add(D entity) {
         mDataList.add(mDataList.size() - mRooterList.size(), entity);
         this.notifyItemInserted(mDataList.size() - mRooterList.size() - 1);
     }
@@ -136,7 +136,7 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
      * @param index
      * @param entity
      */
-    public void add(int index, Object entity) {
+    public <D extends IEntity> void add(int index, D entity) {
         checkIndex(index);
         mDataList.add(index, entity);
         this.notifyItemInserted(index);
@@ -181,7 +181,7 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
      * @param index
      * @param entity
      */
-    public void update(int index, Object entity) {
+    public <D extends IEntity> void update(int index, D entity) {
         if (index < mHeaderList.size() || index >= mDataList.size() - mRooterList.size()) {
             throw new BaseAdapterException(BaseAdapterException.INDEX_OUT_OF_RANGE);
         }

@@ -97,7 +97,8 @@ public class MainActivity extends AppCompatActivity {
                 mRecycler.post(new Runnable() {
                     @Override
                     public void run() {
-                        mAdapter.add(new TvEntity("auto load more tv"));
+
+                        mAdapter.add(createDataList());
                     }
                 });
             }
@@ -130,8 +131,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private List<Object> createDataList() {
-        List<Object> list = new ArrayList<>();
+    private List<IEntity> createDataList() {
+        List<IEntity> list = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             if (i % 3 == 0) {
                 list.add(new BtnEntity("button " + i));

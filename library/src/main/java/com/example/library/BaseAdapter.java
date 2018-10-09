@@ -156,7 +156,7 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
      * 在末尾处添加实体集
      * @param entityList
      */
-    public void add(List<IEntity> entityList) {
+    public <D extends IEntity> void add(List<D> entityList) {
         mDataList.addAll(mDataList.size() - mRooterList.size(), entityList);
         this.notifyItemRangeInserted(mDataList.size() - mRooterList.size() - entityList.size(),
                 entityList.size());
@@ -194,7 +194,7 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
      * 替换所有实体
      * @param entityList
      */
-    public void replace(List<IEntity> entityList) {
+    public <D extends IEntity> void replace(List<D> entityList) {
         mDataList.clear();
         mDataList.addAll(mHeaderList);
         mDataList.addAll(entityList);
@@ -242,7 +242,7 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
          * @param dataList
          * @return
          */
-        public Builder setDataList(List<IEntity> dataList) {
+        public <D extends IEntity> Builder setDataList(List<D> dataList) {
             mAdapter.mDataList.addAll(mAdapter.mHeaderList.size(), dataList);
             return this;
         }

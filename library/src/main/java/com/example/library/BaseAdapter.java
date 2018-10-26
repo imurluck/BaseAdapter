@@ -62,7 +62,7 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
     /**
      * 构造方法，初始化实体集序列
      */
-    private BaseAdapter() {
+    BaseAdapter() {
         mDataList = new ArrayList<>(0);
         mHeaderList = new ArrayList<>(0);
         mRooterList = new ArrayList<>(0);
@@ -122,6 +122,14 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
         return ((IEntity) mDataList.get(position)).getLayoutId();
     }
 
+    public IEntity getItem(int position) {
+        return mDataList.get(position);
+    }
+
+    public List<IEntity> getDataList() {
+        return mDataList;
+    }
+
     /**
      * 在末尾添加一个新的实体
      * @param entity
@@ -147,7 +155,7 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
      * @param index
      */
     private void checkIndex(int index) {
-        if (index < mHeaderList.size() || index >= mDataList.size() - mRooterList.size()) {
+        if (index < mHeaderList.size() || index > mDataList.size() - mRooterList.size()) {
             throw new BaseAdapterException(BaseAdapterException.INDEX_OUT_OF_RANGE);
         }
     }
@@ -162,6 +170,12 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
                 entityList.size());
     }
 
+    public <D extends IEntity> void add(int index, List<D> entityList) {
+        checkIndex(index);
+        mDataList.addAll(index, entityList);
+        this.notifyItemRangeInserted(index, entityList.size());
+    }
+
     /**
      * 删除一个实体集
      * @param index
@@ -174,6 +188,23 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
         checkIndex(index);
         mDataList.remove(index);
         notifyItemRemoved(index);
+    }
+
+    public void remove(int startPosition, List<IEntity> entityList) {
+        mDataList.removeAll(entityList);
+        notifyItemRangeRemoved(startPosition + 1, entityList.size());
+    }
+
+    public void remove(int startPosition, int count) {
+        if (startPosition == -1) {
+            return ;
+        }
+        checkIndex(startPosition);
+        if (startPosition + count > mDataList.size()) {
+            throw new BaseAdapterException(BaseAdapterException.NOT_ENOUGH_ITEM);
+        }
+
+        this.notifyItemRangeRemoved(startPosition, count);
     }
 
     /**

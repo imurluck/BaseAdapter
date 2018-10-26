@@ -1,5 +1,6 @@
 package com.example.zzx.baseadapter;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         headerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Header Button", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, GroupExpandActivity.class));
             }
         });
         Button rooterBtn = new Button(this);

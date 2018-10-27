@@ -221,6 +221,11 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
         this.notifyItemChanged(index);
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
     /**
      * 替换所有实体
      * @param entityList

@@ -27,6 +27,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    lintOptions {
+        abortOnError = false
+    }
 }
 
 dependencies {
@@ -43,10 +47,7 @@ publish {
     userOrg = 'neuzzx'
     groupId = 'com.zzx'
     artifactId = 'BaseAdapter'
-    publishVersion = '2.0.4'
-    desc = 'update:' +
-            '- getItemViewType changed the way to get Layout ID' +
-            '- IEntity interface changed the method' +
-            '- fix some bug(like remove, add method)'
+    publishVersion = '2.0.5'
+    desc = ''
     website = 'https://github.com/imurluck/BaseAdapter'
 }

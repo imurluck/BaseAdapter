@@ -29,6 +29,10 @@ public class SingleTypeAdapter extends RecyclerView.Adapter<SingleTypeAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         holder.btn.setText(mDataList.get(position));
+        holder.btn.setOnClickListener((view) -> {
+            mDataList.remove(position);
+            notifyItemRemoved(holder.getAdapterPosition());
+        });
     }
 
     @Override

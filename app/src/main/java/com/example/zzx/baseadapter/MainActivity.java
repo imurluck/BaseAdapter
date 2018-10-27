@@ -3,9 +3,11 @@ package com.example.zzx.baseadapter;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     private BaseAdapter mAdapter;
 
+    private SingleTypeAdapter mSingleAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupRecyclerView() {
         Button headerBtn = new Button(this);
-        headerBtn.setText("Header");
+        headerBtn.setText("go to GroupExpandActivity");
         headerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Log.e(TAG, "run: " + System.currentTimeMillis());
-                //mRecycler.setAdapter(new SingleTypeAdapter(mSingleDataList));
+//                mRecycler.setAdapter(new SingleTypeAdapter(mSingleDataList));
                 mRecycler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -99,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 
-                        mAdapter.add(createDataList());
+//                        mAdapter.add(createDataList());
                     }
                 });
             }
@@ -110,9 +114,8 @@ public class MainActivity extends AppCompatActivity {
         if (mDataList == null) {
             mDataList = new ArrayList<>();
         }
-        for (int i = 0; i < 30; i++) {
-//            mDataList.add(new BtnEntity("button " + i));
 
+        for (int i = 0; i < 30; i++) {
             if (i % 3 == 0) {
                 mDataList.add(new BtnEntity("button " + i));
             } else if (i % 5 == 0) {
@@ -127,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         if (mSingleDataList == null) {
             mSingleDataList = new ArrayList<>();
         }
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 8; i++) {
             mSingleDataList.add("button " + i);
         }
     }

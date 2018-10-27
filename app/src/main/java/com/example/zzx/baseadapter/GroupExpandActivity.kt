@@ -3,6 +3,7 @@ package com.example.zzx.baseadapter
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.SimpleItemAnimator
 import com.example.library.GroupExpandAdapter
 import com.example.library.IEntity
 import com.example.library.IGroupEntity
@@ -47,5 +48,6 @@ class GroupExpandActivity : AppCompatActivity() {
         })
         expandRecycler.adapter = mGroupExpandAdapter
         expandRecycler.itemAnimator = DefaultItemAnimator()
+        (expandRecycler.itemAnimator as SimpleItemAnimator).removeDuration = 0
     }
 }

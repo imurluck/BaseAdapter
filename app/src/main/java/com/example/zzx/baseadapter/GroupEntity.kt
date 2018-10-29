@@ -9,19 +9,25 @@ import com.example.library.GroupExpandAdapter
 import com.example.library.IEntity
 import com.example.library.IGroupEntity
 
-class GroupEntity(name : String) : IGroupEntity<ChildEntity, GroupEntity> {
+class GroupEntity : IGroupEntity<ChildEntity, GroupEntity> {
 
 
 
-    private val mGroupName = name
+    private var mGroupName : String
 
-    private var mChildList : MutableList<ChildEntity>
+    private var mChildList : MutableList<ChildEntity>?
 
     private lateinit var mArrowImg : ImageView
 
-    init {
+    constructor(name : String) {
+        mGroupName = name
         mChildList = setupChildList()
     }
+    constructor(name : String, childList : MutableList<ChildEntity>?) {
+        mChildList = childList
+        mGroupName = name
+    }
+
 
     private fun setupChildList(): MutableList<ChildEntity> {
         var childList : MutableList<ChildEntity> = mutableListOf()
@@ -32,7 +38,7 @@ class GroupEntity(name : String) : IGroupEntity<ChildEntity, GroupEntity> {
     }
 
     override fun getChildSize(): Int {
-        return mChildList.size
+        return mChildList!!.size
     }
 
     override fun getLayoutId(): Int {
@@ -48,7 +54,7 @@ class GroupEntity(name : String) : IGroupEntity<ChildEntity, GroupEntity> {
     }
 
 
-    override fun getChildList(): MutableList<ChildEntity> = mChildList
+    override fun getChildList() = mChildList
 
     fun animateExpand() {
         var rotateAnimation = RotateAnimation(360f, 180f, RELATIVE_TO_SELF,

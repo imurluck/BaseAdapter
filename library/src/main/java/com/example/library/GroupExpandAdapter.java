@@ -2,10 +2,12 @@ package com.example.library;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.view.ViewGroup;
 
 import java.security.acl.Group;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,6 +31,9 @@ public class GroupExpandAdapter extends BaseAdapter {
      */
     private GroupExpandAdapter() {
         super();
+        mGroupList = new ArrayList<>();
+        mGroupIndexMap = new HashMap<>();
+        mGroupStateMap = new HashMap<>();
     }
 
     @NonNull
@@ -46,12 +51,15 @@ public class GroupExpandAdapter extends BaseAdapter {
     }
 
 
-    public void groupList(List<? extends IGroupEntity> groupList) {
+    public void addGroupList(List<? extends IGroupEntity> groupList) {
         mGroupList.addAll(groupList);
         if (mExpandAll) {
             for (int i = 0; i < groupList.size(); i++) {
-                add(groupList.get(i));
-                add(groupList.get(i).getChildList());
+                IGroupEntity groupEntity = groupList.get(i);
+                add(groupEntity);
+                if (groupEntity.getChildList() != null) {
+                    add(groupEntity.getChildList());
+                }
                 mGroupStateMap.put(groupList.get(i), STATE_EXPAND);
             }
         } else {
@@ -75,6 +83,9 @@ public class GroupExpandAdapter extends BaseAdapter {
     }
 
     public void expand(int startPosition, IGroupEntity groupEntity) {
+        if (groupEntity.getChildList() == null) {
+            return ;
+        }
         add(startPosition + 1, groupEntity.getChildList());
         if (mOnToogleListener != null) {
             mOnToogleListener.onExpand(groupEntity);
@@ -83,6 +94,9 @@ public class GroupExpandAdapter extends BaseAdapter {
     }
 
     public void clloapse(int startPosition, IGroupEntity groupEntity) {
+        if (groupEntity.getChildList() == null) {
+            return ;
+        }
         remove(startPosition, groupEntity.getChildList());
         if (mOnToogleListener != null) {
             mOnToogleListener.onClloapse(groupEntity);
@@ -102,9 +116,6 @@ public class GroupExpandAdapter extends BaseAdapter {
 
         public Builder() {
             mGroupExpandAdapter = new GroupExpandAdapter();
-            mGroupExpandAdapter.mGroupList = new ArrayList<>();
-            mGroupExpandAdapter.mGroupIndexMap = new HashMap<>();
-            mGroupExpandAdapter.mGroupStateMap = new HashMap<>();
         }
 
         public Builder expandAll() {
@@ -117,8 +128,66 @@ public class GroupExpandAdapter extends BaseAdapter {
             return this;
         }
 
+        /**
+         * 添加一个头部
+         * @param headerView
+         * @return
+         */
+        public Builder addHeader(View headerView) {
+            mGroupExpandAdapter.mHeaderList.add(0, new HeaderEntity(headerView));
+            mGroupExpandAdapter.mDataList.add(0, new HeaderEntity(headerView));
+            return this;
+        }
+
+        /**
+         * 添加头部集合
+         * @param headerList
+         * @return
+         */
+        public Builder addHeader(List<View> headerList) {
+            for (int i = headerList.size() - 1; i >= 0; i--) {
+                mGroupExpandAdapter.mHeaderList.add(0, new HeaderEntity(headerList.get(i)));
+                mGroupExpandAdapter.mDataList.add(0, new HeaderEntity(headerList.get(i)));
+            }
+            return this;
+        }
+
+        /**
+         * 设置是否开启自动加载更多
+         * @param autoLoadMore
+         * @return
+         */
+        public Builder autoLoadMore(boolean autoLoadMore) {
+            mGroupExpandAdapter.autoLoadMore = autoLoadMore;
+            return this;
+        }
+
+        /**
+         * 添加尾部
+         * @param view
+         * @return
+         */
+        public Builder addRooter(View view) {
+            mGroupExpandAdapter.mRooterList.add(new RooterEntity(view));
+            mGroupExpandAdapter.mDataList.add(new RooterEntity(view));
+            return this;
+        }
+
+        /**
+         * 添加尾部集合
+         * @param rooterList
+         * @return
+         */
+        public Builder addRooter(List<View> rooterList) {
+            for (int i = rooterList.size() - 1; i >= 0; i--) {
+                mGroupExpandAdapter.mRooterList.add(new RooterEntity(rooterList.get(i)));
+                mGroupExpandAdapter.mDataList.add(new RooterEntity(rooterList.get(i)));
+            }
+            return this;
+        }
+
         public GroupExpandAdapter build() {
-            mGroupExpandAdapter.groupList(mGroupList);
+            mGroupExpandAdapter.addGroupList(mGroupList);
             return mGroupExpandAdapter;
         }
     }

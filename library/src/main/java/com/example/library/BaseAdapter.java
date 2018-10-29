@@ -27,22 +27,22 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
     /**
      * 数据集合，包含数据实体集，头部尾部实体集，(头部和尾部可以看做多类型中的一种,因此合并)
      */
-    private List<IEntity> mDataList;
+    protected List<IEntity> mDataList;
 
     /**
      * 单独保存头部实体集引用序列
      */
-    private List<HeaderEntity> mHeaderList;
+    protected List<HeaderEntity> mHeaderList;
 
     /**
      * 单独保存尾部实体集引用序列
      */
-    private List<RooterEntity> mRooterList;
+    protected List<RooterEntity> mRooterList;
 
     /**
      * 是否自动加载更多
      */
-    private boolean autoLoadMore;
+    protected boolean autoLoadMore;
 
     /**
      * 默认spantCount

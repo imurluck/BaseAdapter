@@ -1,7 +1,5 @@
 package com.example.library;
 
-import android.preference.PreferenceActivity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
 

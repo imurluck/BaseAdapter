@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.ViewGroup;
 
+import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,8 @@ public class GroupExpandAdapter extends BaseAdapter {
     private HashMap<IGroupEntity, Integer> mGroupIndexMap;
 
     private HashMap<IGroupEntity, Integer> mGroupStateMap;
+
+    private boolean mExpandAll;
 
     private static final int STATE_EXPAND = 1;
     private static final int STATE_CLLOAPSE = 0;
@@ -45,7 +48,18 @@ public class GroupExpandAdapter extends BaseAdapter {
 
     public void groupList(List<? extends IGroupEntity> groupList) {
         mGroupList.addAll(groupList);
-        add(groupList);
+        if (mExpandAll) {
+            for (int i = 0; i < groupList.size(); i++) {
+                add(groupList.get(i));
+                add(groupList.get(i).getChildList());
+                mGroupStateMap.put(groupList.get(i), STATE_EXPAND);
+            }
+        } else {
+            for (int i = 0; i < groupList.size(); i++) {
+                mGroupStateMap.put(groupList.get(i), STATE_CLLOAPSE);
+            }
+            add(groupList);
+        }
     }
 
     public void setOnToogleListener(@Nullable OnToogleListener listener) {
@@ -84,6 +98,8 @@ public class GroupExpandAdapter extends BaseAdapter {
 
         private GroupExpandAdapter mGroupExpandAdapter;
 
+        private List<? extends IGroupEntity> mGroupList;
+
         public Builder() {
             mGroupExpandAdapter = new GroupExpandAdapter();
             mGroupExpandAdapter.mGroupList = new ArrayList<>();
@@ -91,15 +107,18 @@ public class GroupExpandAdapter extends BaseAdapter {
             mGroupExpandAdapter.mGroupStateMap = new HashMap<>();
         }
 
+        public Builder expandAll() {
+            mGroupExpandAdapter.mExpandAll = true;
+            return this;
+        }
+
         public Builder groupList(List<? extends IGroupEntity> groupList) {
-            mGroupExpandAdapter.groupList(groupList);
-            for (int i = 0; i < groupList.size(); i++) {
-                mGroupExpandAdapter.mGroupStateMap.put(groupList.get(i), STATE_CLLOAPSE);
-            }
+            mGroupList =  groupList;
             return this;
         }
 
         public GroupExpandAdapter build() {
+            mGroupExpandAdapter.groupList(mGroupList);
             return mGroupExpandAdapter;
         }
     }

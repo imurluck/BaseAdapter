@@ -34,6 +34,7 @@ class GroupExpandActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         mGroupExpandAdapter = GroupExpandAdapter.Builder()
                 .groupList(mGroupList)
+                .expandAll()
                 .build()
         mGroupExpandAdapter.setOnToogleListener(object : GroupExpandAdapter.OnToogleListener {
             override fun onExpand(groupEntity: IGroupEntity<out IEntity<IEntity<*>>, out IEntity<IEntity<*>>>?) {

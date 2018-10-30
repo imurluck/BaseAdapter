@@ -187,7 +187,9 @@ public class GroupExpandAdapter extends BaseAdapter {
         }
 
         public GroupExpandAdapter build() {
-            mGroupExpandAdapter.addGroupList(mGroupList);
+            if (mGroupList != null) {
+                mGroupExpandAdapter.addGroupList(mGroupList);
+            }
             return mGroupExpandAdapter;
         }
     }

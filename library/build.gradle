@@ -47,7 +47,7 @@ publish {
     userOrg = 'neuzzx'
     groupId = 'com.zzx'
     artifactId = 'BaseAdapter'
-    publishVersion = '2.0.7'
+    publishVersion = '2.0.10'
     desc = ''
     website = 'https://github.com/imurluck/BaseAdapter'
 }

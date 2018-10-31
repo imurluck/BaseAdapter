@@ -4,9 +4,9 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.example.library.BaseAdapter
-import com.example.library.IEntity
+import com.example.library.IChildEntity
 
-class ChildEntity(name : String) : IEntity<ChildEntity> {
+class ChildEntity(name : String) : IChildEntity<ChildEntity>() {
 
     private val mChildNam : String = name
 

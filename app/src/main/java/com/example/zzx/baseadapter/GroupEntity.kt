@@ -37,7 +37,7 @@ class GroupEntity : IGroupEntity<ChildEntity, GroupEntity> {
         return childList
     }
 
-    override fun getChildSize(): Int {
+    override fun returnChildSize(): Int {
         return mChildList!!.size
     }
 
@@ -54,7 +54,7 @@ class GroupEntity : IGroupEntity<ChildEntity, GroupEntity> {
     }
 
 
-    override fun getChildList() = mChildList
+    override fun returnChildList() = mChildList
 
     fun animateExpand() {
         var rotateAnimation = RotateAnimation(360f, 180f, RELATIVE_TO_SELF,

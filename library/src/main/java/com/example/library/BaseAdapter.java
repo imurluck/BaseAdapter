@@ -141,18 +141,17 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
 
     /**
      * 在指定索引处添加一个新的实体
-     * @param index
+     * @param index 这里的索引是指除开{@link #mHeaderList}和{@link #mRooterList}
      * @param entity
      */
     public void add(int index, IEntity entity) {
-        checkIndex(index);
-        mDataList.add(index, entity);
-        this.notifyItemInserted(index);
+        mDataList.add(index + mHeaderList.size(), entity);
+        this.notifyItemInserted(index + mHeaderList.size());
     }
 
     /**
      * 检查index是否在数据范围类
-     * @param index
+     * @param index 这里的索引是指除开{@link #mHeaderList}和{@link #mRooterList}
      */
     private void checkIndex(int index) {
         if (index < mHeaderList.size() || index > mDataList.size() - mRooterList.size()) {
@@ -170,10 +169,14 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
                 entityList.size());
     }
 
+    /**
+     * @param index 这里的索引是指除开{@link #mHeaderList}和{@link #mRooterList}
+     * @param entityList
+     * @param <D>
+     */
     public <D extends IEntity> void add(int index, List<D> entityList) {
-        checkIndex(index);
-        mDataList.addAll(index, entityList);
-        this.notifyItemRangeInserted(index, entityList.size());
+        mDataList.addAll(index + mHeaderList.size(), entityList);
+        this.notifyItemRangeInserted(index + mHeaderList.size(), entityList.size());
     }
 
     /**

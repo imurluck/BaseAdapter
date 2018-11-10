@@ -42,12 +42,18 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
 
+tasks.withType(Javadoc) {
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
+}
+
 publish {
     repoName = 'BaseAdapter'//这个名称对应在bintray中建的仓库,一定要写
     userOrg = 'neuzzx'
     groupId = 'com.zzx'
     artifactId = 'BaseAdapter'
-    publishVersion = '2.0.10'
+    publishVersion = '2.1.0'
     desc = ''
     website = 'https://github.com/imurluck/BaseAdapter'
 }

@@ -7,5 +7,5 @@ package com.example.library;
  */
 public abstract class IChildEntity<D extends IChildEntity> implements IEntity<D> {
 
-    IGroupEntity groupEntity;
+    protected IGroupEntity groupEntity;
 }

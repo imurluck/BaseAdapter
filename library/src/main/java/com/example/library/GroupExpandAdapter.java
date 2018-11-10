@@ -79,6 +79,7 @@ public class GroupExpandAdapter extends BaseAdapter {
             }
             add(realIndex, groupEntity);
             groupEntity.state = STATE_EXPAND;
+            return ;
         }
         add(realIndex, groupEntity);
         groupEntity.state = STATE_CLLOAPSE;

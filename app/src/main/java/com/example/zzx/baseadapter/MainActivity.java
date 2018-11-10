@@ -64,6 +64,15 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Rooter Button", Toast.LENGTH_SHORT).show();
             }
         });
+        Button emptyBtn = new Button(this);
+        emptyBtn.setText("Empty Button");
+        emptyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAdapter.cancelEmptyState();
+                Toast.makeText(MainActivity.this, "Empty Button", Toast.LENGTH_SHORT).show();
+            }
+        });
         mRecycler = findViewById(R.id.recycler);
 //        mRecycler.setLayoutManager(new GridLayoutManager(this, 4));
         mRecycler.setLayoutManager(new LinearLayoutManager(this,
@@ -73,8 +82,10 @@ public class MainActivity extends AppCompatActivity {
                 .setDataList(mDataList)
                 .addHeader(headerBtn)
                 .addRooter(rooterBtn)
-                .autoLoadMore(true)
+                .emptyView(emptyBtn)
+                .autoLoadMore()
                 .build();
+        mAdapter.emptyState();
         mRecycler.setAdapter(mAdapter);
         mRecycler.post(new Runnable() {
             @Override

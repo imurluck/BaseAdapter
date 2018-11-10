@@ -39,6 +39,10 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
      */
     protected List<RooterEntity> mRooterList;
 
+    private boolean isInEmptyState;
+
+    private EmptyEntity mEmptyEntity;
+
     /**
      * 是否自动加载更多
      */
@@ -89,6 +93,10 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
      */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        if (isInEmptyState) {
+            mEmptyEntity.bindView(this, holder, mEmptyEntity, position);
+            return ;
+        }
         Log.e(TAG, "onBindViewHolder: " + position);
         IEntity entity = (IEntity) mDataList.get(position);
         entity.bindView(this, holder, entity, position);
@@ -116,6 +124,9 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
      */
     @Override
     public int getItemViewType(int position) {
+        if (isInEmptyState) {
+            return mEmptyEntity.getLayoutId();
+        }
         if (!(mDataList.get(position) instanceof IEntity)) {
             throw new BaseAdapterException(BaseAdapterException.ENTITY_TYPE_ERROR);
         }
@@ -243,7 +254,21 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
 
     @Override
     public int getItemCount() {
-        return mDataList.size();
+        return isInEmptyState? 1 : mDataList.size();
+    }
+
+    public void emptyState() {
+        isInEmptyState = true;
+        notifyDataSetChanged();
+    }
+
+    public void cancelEmptyState() {
+        isInEmptyState = false;
+        notifyDataSetChanged();
+    }
+
+    public boolean isInEmptyState() {
+        return isInEmptyState;
     }
 
     /**
@@ -312,11 +337,11 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
 
         /**
          * 设置是否开启自动加载更多
-         * @param autoLoadMore
+         * @param
          * @return
          */
-        public Builder autoLoadMore(boolean autoLoadMore) {
-            mAdapter.autoLoadMore = autoLoadMore;
+        public Builder autoLoadMore() {
+            mAdapter.autoLoadMore = true;
             return this;
         }
 
@@ -341,6 +366,11 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
                 mAdapter.mRooterList.add(new RooterEntity(rooterList.get(i)));
                 mAdapter.mDataList.add(new RooterEntity(rooterList.get(i)));
             }
+            return this;
+        }
+
+        public Builder emptyView(View emptyView) {
+            mAdapter.mEmptyEntity = new EmptyEntity(emptyView);
             return this;
         }
 

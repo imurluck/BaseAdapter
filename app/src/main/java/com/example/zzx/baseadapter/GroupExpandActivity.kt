@@ -54,7 +54,7 @@ class GroupExpandActivity : AppCompatActivity() {
         rooter.text = "it's group rooter"
         rooter.setOnClickListener {
             Toast.makeText(this, "rooter click", Toast.LENGTH_SHORT).show()
-            mGroupExpandAdapter.addGroupList(setupGroupList())
+            mGroupExpandAdapter.addGroup(GroupEntity("group add"))
         }
         mGroupExpandAdapter = GroupExpandAdapter.Builder()
                 .addHeader(header)

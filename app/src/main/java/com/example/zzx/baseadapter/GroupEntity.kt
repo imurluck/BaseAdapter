@@ -38,7 +38,7 @@ class GroupEntity : IGroupEntity<ChildEntity, GroupEntity> {
     }
 
     override fun returnChildSize(): Int {
-        return mChildList!!.size
+        return if (mChildList == null) 0 else mChildList!!.size
     }
 
     override fun getLayoutId(): Int {

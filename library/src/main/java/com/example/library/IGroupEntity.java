@@ -12,6 +12,7 @@ import java.util.List;
  */
 public abstract class IGroupEntity<CT extends IChildEntity, D extends IEntity> implements IEntity<D> {
 
+    int position;
     int state;
     private List<CT> childList;
 

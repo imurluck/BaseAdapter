@@ -138,7 +138,22 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
     }
 
     public List<IEntity> getDataList() {
-        return mDataList;
+        if (getDataCount() == 0) {
+            return null;
+        }
+        List dataList = mDataList.subList(mHeaderList.size(), mDataList.size() - mRooterList.size());
+        return dataList;
+    }
+
+    public int getDataCount() {
+        return mDataList.size() - mHeaderList.size() - mRooterList.size();
+    }
+
+    public IEntity getLastItem() {
+        if (getDataCount() == 0) {
+            return null;
+        }
+        return mDataList.get(mDataList.size() - mRooterList.size() - 1);
     }
 
     /**

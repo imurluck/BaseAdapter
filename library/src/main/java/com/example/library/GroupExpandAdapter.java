@@ -19,7 +19,6 @@ public class GroupExpandAdapter extends BaseAdapter {
      * 保存Group实体在列表中的位置，此处位置包含{@link #mHeaderList} 和 {@link #mRooterList}
      * 暂时保存，还未有用处
      */
-    private HashMap<IGroupEntity, Integer> mGroupIndexMap;
 
     private boolean expandAll;
 
@@ -36,7 +35,6 @@ public class GroupExpandAdapter extends BaseAdapter {
     private GroupExpandAdapter() {
         super();
         mGroupList = new ArrayList<>();
-        mGroupIndexMap = new HashMap<>();
     }
 
     @NonNull
@@ -49,7 +47,7 @@ public class GroupExpandAdapter extends BaseAdapter {
     public void onBindViewHolder(@NonNull BaseAdapter.ViewHolder holder, int position) {
         IEntity currentEntity = getItem(position);
         if (currentEntity instanceof IGroupEntity) {
-            mGroupIndexMap.put((IGroupEntity) currentEntity, position);
+            ((IGroupEntity) currentEntity).position = position;
             mCurrentBindGroup = (IGroupEntity) currentEntity;
         }
         //在Child中保存Group实体
@@ -98,7 +96,7 @@ public class GroupExpandAdapter extends BaseAdapter {
     public void addChild(int index, IChildEntity childEntity, IGroupEntity groupEntity) {
         childEntity.groupEntity = groupEntity;
         groupEntity.addChild(index, childEntity);
-        int position = mGroupIndexMap.get(groupEntity) - mHeaderList.size() + index + 1;
+        int position = groupEntity.position - mHeaderList.size() + index + 1;
         if (groupEntity.state == STATE_EXPAND) {
             add(position, childEntity);
         }
@@ -106,6 +104,13 @@ public class GroupExpandAdapter extends BaseAdapter {
 
     public void addChild(IChildEntity childEntity, IGroupEntity groupEntity) {
         addChild(groupEntity.getChildSize(), childEntity, groupEntity);
+    }
+
+    public IGroupEntity getLastGroup() {
+        if (mGroupList.size() == 0) {
+            return null;
+        }
+        return mGroupList.get(mGroupList.size() - 1);
     }
 
     /**
@@ -116,7 +121,11 @@ public class GroupExpandAdapter extends BaseAdapter {
     private int getRealIndex(int index) {
         int result = 0;
         for (int i = 0; i < index; i++) {
-            result += mGroupList.get(i).getChildSize() + 1;
+            IGroupEntity tmp = mGroupList.get(i);
+            if (tmp.state == STATE_EXPAND) {
+                result += tmp.getChildSize();
+            }
+            result++;
         }
         return result;
     }
@@ -140,6 +149,14 @@ public class GroupExpandAdapter extends BaseAdapter {
             }
             add(groupList);
         }
+    }
+
+    public int getGroupSize() {
+        return mGroupList.size();
+    }
+
+    public List<IGroupEntity> getGroupList() {
+        return mGroupList;
     }
 
     public void setOnToogleListener(@Nullable OnToogleListener listener) {

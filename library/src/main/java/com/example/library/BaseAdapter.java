@@ -1,19 +1,18 @@
 package com.example.library;
-
-
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 /**
  * 通用RecyclerView Adapter
  * 功能点:
- * - 多类型Item,adapter生成速度与原生写法仅相差40ms
+ * - 多类型Item
  * - 添加头部和尾部
  * - 自动加载更多
  * - 后续待添加...
@@ -39,9 +38,9 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
      */
     protected List<RooterEntity> mRooterList;
 
-    private boolean isInEmptyState;
+    protected boolean isInEmptyState;
 
-    private EmptyEntity mEmptyEntity;
+    protected EmptyEntity mEmptyEntity;
 
     /**
      * 是否自动加载更多
@@ -263,6 +262,13 @@ public class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.ViewHolder>{
         mDataList.clear();
         mDataList.addAll(mHeaderList);
         mDataList.addAll(entityList);
+        mDataList.addAll(mRooterList);
+        this.notifyDataSetChanged();
+    }
+
+    public void clearData() {
+        mDataList.clear();
+        mDataList.addAll(mHeaderList);
         mDataList.addAll(mRooterList);
         this.notifyDataSetChanged();
     }

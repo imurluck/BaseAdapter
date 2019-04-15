@@ -1,18 +1,15 @@
 package com.example.zzx.baseadapter;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.example.library.BaseAdapter;
 import com.example.library.IEntity;
 
@@ -76,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         mRecycler = findViewById(R.id.recycler);
 //        mRecycler.setLayoutManager(new GridLayoutManager(this, 4));
         mRecycler.setLayoutManager(new LinearLayoutManager(this,
-                LinearLayoutManager.VERTICAL, false));
+                RecyclerView.VERTICAL, false));
         Log.e(TAG, "setupRecyclerView: " + System.currentTimeMillis());
         mAdapter = new BaseAdapter.Builder()
                 .setDataList(mDataList)

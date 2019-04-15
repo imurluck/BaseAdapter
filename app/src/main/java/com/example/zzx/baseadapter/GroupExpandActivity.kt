@@ -1,11 +1,13 @@
 package com.example.zzx.baseadapter
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.SimpleItemAnimator
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.library.GroupExpandAdapter
 import com.example.library.IChildEntity
 import com.example.library.IEntity
@@ -23,7 +25,6 @@ class GroupExpandActivity : AppCompatActivity() {
         setContentView(R.layout.activity_group_expand)
 
         mGroupList = setupGroupList()
-
         setupRecyclerView()
     }
 
@@ -56,7 +57,15 @@ class GroupExpandActivity : AppCompatActivity() {
             Toast.makeText(this, "rooter click", Toast.LENGTH_SHORT).show()
             mGroupExpandAdapter.addGroup(GroupEntity("group add"))
         }
+
+        val emptyBtn = Button(this)
+        emptyBtn.text = "Empty Button"
+        emptyBtn.setOnClickListener {
+            mGroupExpandAdapter.cancelEmptyState()
+            Toast.makeText(this, "Empty Button", Toast.LENGTH_SHORT).show()
+        }
         mGroupExpandAdapter = GroupExpandAdapter.Builder()
+                .emptyView(emptyBtn)
                 .addHeader(header)
                 .addHeader(header1)
                 .addRooter(rooter)
@@ -74,6 +83,8 @@ class GroupExpandActivity : AppCompatActivity() {
 
 
         })
+        mGroupExpandAdapter.emptyState()
+        expandRecycler.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         expandRecycler.adapter = mGroupExpandAdapter
         expandRecycler.itemAnimator = DefaultItemAnimator()
         (expandRecycler.itemAnimator as SimpleItemAnimator).removeDuration = 0
